@@ -15,5 +15,10 @@ run:
 run-ros:
 	docker run --runtime=nvidia -v=./cache:/root/.cache/whisper \
 			   -v=./cache:/root/.cache/whisper_trt -v=./speech:/workspace/speech \
-			   -v=.:/workspace --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -it \
+			   --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -it \
+			   --name thor-whisper-trt-ros \
 			   --rm thor-whisper-trt-ros:latest
+
+.PHONY: open-terminal
+open-terminal:
+	docker exec -it thor-whisper-trt-ros /bin/bash
