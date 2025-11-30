@@ -21,6 +21,7 @@ This repository provides a Docker environment to run Whisper with and without Te
 * The first inference run will include overhead because:
     1. Whisper model must be downloaded.
     2. If using TensorRT, the model will be converted and cached.
+* I'm able to run this code on my laptop aswell but I mainly tested it on Thor.
 
 ## Benchmark
 
