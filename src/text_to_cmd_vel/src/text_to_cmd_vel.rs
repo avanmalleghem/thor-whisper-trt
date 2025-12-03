@@ -16,7 +16,7 @@ fn main() -> Result<(), Error> {
         move |msg: std_msgs::msg::String| {
             let command = msg.data;
 
-            println!("Command received: '{}'", command);
+            log!(node.logger(), "Command received: '{command}'");
 
             let mut message = geometry_msgs::msg::Twist::default();
 
@@ -32,7 +32,6 @@ fn main() -> Result<(), Error> {
         },
     )?;
 
-    println!("Waiting for messages...");
     executor.spin(SpinOptions::default()).first_error()?;
     Ok(())
 }
