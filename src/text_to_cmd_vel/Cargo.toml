@@ -1,7 +1,7 @@
 [package]
 name = "text_to_cmd_vel"
 version = "0.0.1"
-authors = ["Antoine Van Malleghem <antoine.vanmalleghem@botronics.be>"]
+authors = ["Antoine Van Malleghem <a.vanmalleghem@gmail.com>"]
 edition = "2021"
 
 [[bin]]
