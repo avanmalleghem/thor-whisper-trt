@@ -1,0 +1,19 @@
+[package]
+name = "text_to_cmd_vel"
+version = "0.0.1"
+authors = ["Antoine Van Malleghem <antoine.vanmalleghem@botronics.be>"]
+edition = "2021"
+
+[[bin]]
+name = "text_to_cmd_vel"
+path = "src/text_to_cmd_vel.rs"
+
+[dependencies]
+anyhow = {version = "1", features = ["backtrace"]}
+rclrs = "0.6"
+rosidl_runtime_rs = "0.5"
+geometry_msgs = { version = "*", features = ["serde"] }
+std_msgs = { version = "*", features = ["serde"] }
+
+# This specific version is compatible with Rust 1.75
+backtrace = "=0.3.74"

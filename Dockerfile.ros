@@ -21,9 +21,21 @@ RUN add-apt-repository universe && \
 
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
 RUN rm -rf /workspace/*
-COPY src /workspace/src
+
 WORKDIR /workspace
-RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && colcon build"
+
+# install rclrs
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain 1.75.0 -y && \
+    git clone https://github.com/ros2-rust/ros2_rust.git src/ros2_rust && \
+    /workspace/src/ros2_rust/docker/install_colcon_plugins.sh && \ 
+    /workspace/src/ros2_rust/docker/rosidl_rust_setup.sh && \
+    vcs import src < src/ros2_rust/ros2_rust_${ROS_DISTRO}.repos
+ENV PATH=/root/.cargo/bin:$PATH
+
+COPY src /workspace/src
+
+# build workspace
+RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && colcon build --packages-up-to speech_to_text text_to_cmd_vel"
 
 COPY script/start.sh .
 RUN chmod +x start.sh
