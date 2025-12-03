@@ -17,10 +17,10 @@ class SpeechToText(Node):
             String,
             'speech_path',
             self.listener_callback,
-            10)
+            1)
         self.subscription  # prevent unused variable warning
 
-        self.publisher = self.create_publisher(String, 'text', 10)
+        self.publisher = self.create_publisher(String, 'text', 1)
 
         self.get_logger().info('Started!')
 
@@ -31,9 +31,9 @@ class SpeechToText(Node):
         total = t1-t0
         self.get_logger().info(f"Transcription of {msg.data} took {total} seconds")
 
-        msg = String()
-        msg.data = result
-        self.publisher.publish(msg)
+        text_msg = String()
+        text_msg.data = result
+        self.publisher.publish(text_msg)
 
 def main(args=None):
     # init the node
