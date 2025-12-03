@@ -11,8 +11,6 @@ class SpeechToText(Node):
     def __init__(self):
         super().__init__('speech_to_text_node')
 
-        self.model = load_trt_model("base.en")
-
         self.subscription = self.create_subscription(
             String,
             'speech_path',
@@ -26,14 +24,17 @@ class SpeechToText(Node):
 
     def listener_callback(self, msg):
         t0 = time.time()
+
+        self.model = load_trt_model("base.en")
         result = self.model.transcribe(msg.data)['text']
-        t1 = time.time()
-        total = t1-t0
-        self.get_logger().info(f"Transcription of {msg.data} took {total} seconds")
 
         text_msg = String()
         text_msg.data = result
         self.publisher.publish(text_msg)
+        
+        t1 = time.time()
+        total = t1-t0
+        self.get_logger().info(f"Transcription of {msg.data} took {total} seconds")
 
 def main(args=None):
     # init the node
