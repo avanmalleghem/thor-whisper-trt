@@ -6,6 +6,7 @@ from std_msgs.msg import String
 from rclpy.node import Node
 
 from whisper_trt import load_trt_model
+from whisper.model import disable_sdpa
 
 class SpeechToText(Node):
     def __init__(self):
@@ -24,14 +25,14 @@ class SpeechToText(Node):
 
     def listener_callback(self, msg):
         t0 = time.time()
+        with disable_sdpa():
+            self.model = load_trt_model("base.en")
+            result = self.model.transcribe(msg.data)['text']
 
-        self.model = load_trt_model("base.en")
-        result = self.model.transcribe(msg.data)['text']
-
-        text_msg = String()
-        text_msg.data = result
-        self.publisher.publish(text_msg)
-        
+            text_msg = String()
+            text_msg.data = result
+            self.publisher.publish(text_msg)
+            
         t1 = time.time()
         total = t1-t0
         self.get_logger().info(f"Transcription of {msg.data} took {total} seconds")
